@@ -2,7 +2,7 @@
 
 config = {
     type: Phaser.AUTO,
-    width: 1280,
+    width: 1440,
     height: 720,
     physics: {
         default: 'arcade',
@@ -30,56 +30,95 @@ class Main extends Phaser.Scene {
         super("Main");
     }
 
-
     preload() {
         this.load.image('sky', 'assets/sky.png');
         this.load.image('player', 'assets/player.png');
-        this.load.image('enemy', 'assets/enemy1.png');
+        this.load.image('enemy1', 'assets/enemy1.png');
         this.load.image('enemy2', 'assets/enemy2.png');
         this.load.image('enemy3', 'assets/enemy3.png');
         this.load.image('enemy4', 'assets/enemy4.png');
-        this.load.image('rocket', 'assets/rocket1.png');
+        this.load.image('rocket1', 'assets/rocket1.png');
         this.load.image('rocket2', 'assets/rocket2.png');
         this.load.image('rocket3', 'assets/rocket3.png');
+        this.load.image('rocket4', 'assets/rocket4.png');
     }
 
     create() {
-        this.gameOverCondition = false;
 
+        this.gameOverCondition = false;
         this.zero = Date.now();
 
         this.background = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(2);
 
+        // Texts
+        this.tutorial = this.add.text(config.width * 0.4, config.height * 0.45, "Use WASD or Arrow Keys to move\nUse Spacebar to Shoot\nGood Luck. <3", { align: 'center' });
         this.healthText = this.add.text(config.width * 0.05, config.height * 0.9, "wagwe");
         this.ammoText = this.add.text(config.width * 0.8, config.height * 0.9, "wafgew");
         this.scoreText = this.add.text(config.width * 0.05, config.height * 0.1, "gresger");
         this.score = 0;
 
+        // Player Status
         this.player = this.physics.add.sprite(config.width * 0.5, config.height * 0.8, 'player');
-        this.player.speed = 0;
-        this.player.health = 5;
-        this.player.ammo = 10;
-        this.player.shieldTime = Date.now();
-        this.player.healTime = Date.now();
-        this.player.reloadTime = Date.now();
-        this.player.body.useDamping= true;
-        this.player.setDrag(0.2, 0.2);
+        this.player.health = this.player.maxHealth = 5;
+        this.player.ammo = this.player.maxAmmo = 10;
+        this.player.shield = false;
+
+        // Player Events
+        this.player.heal = this.time.addEvent({
+            delay: 3000,
+            callback: this.heal,
+            callbackScope: this,
+            loop: true,
+            paused: true
+        });
+        this.player.reload = this.time.addEvent({
+            delay: 500,
+            callback: this.reload,
+            callbackScope: this,
+            loop: true,
+            paused: true,
+        });
+
+        // Player Physics
+        this.player.body.useDamping = true;
+        this.player.setDrag(0.4, 0.4);
         this.player.setAngularDrag(100);
         this.player.setBounce(0.4);
         this.player.setCollideWorldBounds();
 
+        // Enemies Stats
         this.enemies = this.physics.add.group();
-        this.enemies.spawnTime = Date.now();
+        this.enemies.health = [1, 2, 4, 10];
+        this.enemies.values = [1, 5, 20, 50];
+        this.enemies.coolDown = [3000, 10000, 30000, 50000];
 
-        this.rockets = this.physics.add.group();
+        // Enemies Events
+        this.spawn = [];
+        for (let i = 0; i < 4; i++) {
+            this.spawn[i] = this.time.addEvent({
+                delay: this.enemies.coolDown[i],
+                callback: this.spawnEnemy,
+                args: [i],
+                callbackScope: this,
+                loop: true
+            });
+        }
+
+        this.playerRockets = this.physics.add.group();
 
         this.enemyRockets = this.physics.add.group();
 
         this.physics.add.collider(this.player, this.enemies, this.damagePlayer.bind(this));
-        this.physics.add.collider(this.rockets, this.enemies, this.destroyEnemy.bind(this));
-        this.physics.add.collider(this.player, this.enemyRockets, this.damagePlayerRocket.bind(this));
+        this.physics.add.overlap(this.playerRockets, this.enemies, this.rocketHit.bind(this));
+        this.physics.add.overlap(this.player, this.enemyRockets, this.enemyRocketHit.bind(this));
 
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.wasd = {
+            'w': this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+            'a': this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+            's': this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+            'd': this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+        }
         this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.o = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
 
@@ -90,61 +129,49 @@ class Main extends Phaser.Scene {
         if (this.gameOverCondition)
             return;
 
+        if (this.tutorial.active) {
+            if (Object.values(this.input.keyboard.keys).some((key) => key.isDown))
+                this.tutorial.destroy();
+            else
+                return;
+        }
+
         // Velocity
-        if (this.cursors.up.isDown && this.trueVelocity(this.player) < 300)
+        if (this.cursors.up.isDown || this.wasd['w'].isDown)
             this.accelerate(this.player, 100);
-        else if (this.cursors.down.isDown && this.trueVelocity(this.player) > -150)
-            this.accelerate(this.player, -100);
+        else if (this.cursors.down.isDown || this.wasd['s'].isDown)
+            this.accelerate(this.player, -75);
         else
             this.accelerate(this.player, 0);
 
         // Angular Velocity
-        if (this.cursors.right.isDown && this.player.body.angularVelocity < 200)
-            this.player.setAngularAcceleration(100 + (this.player.body.angularVelocity < 0) * this.player.body.angularDrag);
-        else if (this.cursors.left.isDown && this.player.body.angularVelocity > -200)
-            this.player.setAngularAcceleration(-100 - (this.player.body.angularVelocity > 0) * this.player.body.angularDrag);
+        if ((this.cursors.right.isDown || this.wasd['d'].isDown) && this.player.body.angularVelocity < 200)
+            this.player.setAngularAcceleration(100 + (this.player.body.angularVelocity < 0) * 2 * this.player.body.angularDrag);
+        else if ((this.cursors.left.isDown || this.wasd['a'].isDown) && this.player.body.angularVelocity > -200)
+            this.player.setAngularAcceleration(-100 - (this.player.body.angularVelocity > 0) * 2 * this.player.body.angularDrag);
         else
             this.player.setAngularAcceleration(0);
 
-        // Launch Rockets
-        if (Phaser.Input.Keyboard.JustDown(this.spaceBar) && this.player.ammo > 0) {
+        // Launch playerRockets
+        if (Phaser.Input.Keyboard.JustDown(this.spaceBar) && this.player.ammo > 0)
             this.launchRocket();
-        }
-
-        // Shield
-        if (Date.now() - this.player.shieldTime > 1000)
-            this.player.setTint(0xffffff);
-
-        // Reload
-        if (this.player.ammo < 10 && Date.now() - this.player.reloadTime > 750)
-            this.reload();
-
-        // Heal
-        if (this.player.health < 5 && Date.now() - this.player.healTime > 5000)
-            this.heal();
-
-        // Spawn Enemies
-        if (this.enemies.getLength() < 30 && Date.now() - this.enemies.spawnTime > Math.max(200, 3000 - (Date.now() - this.zero) * 0.05))
-            this.spawnEnemy();
-
-        // Launch Enemy Rockets
-        this.enemies.children.iterate(child => {
-            if (child && child.hasRockets && Date.now() - child.lastRocket > 2000)
-                this.launchEnemyRocket(child);
-        })
 
         // Despawn objects out of the scene
         this.enemies.children.iterate(child => {
             if (child && this.outOfBounds(child)) {
-                child.destroy();
-                console.log('enemy out');
+                this.damageEnemy(child);
             }
         });
 
-        this.rockets.children.iterate(child => {
+        this.playerRockets.children.iterate(child => {
             if (child && this.outOfBounds(child)) {
                 child.destroy();
-                console.log('rocket out');
+            }
+        });
+
+        this.enemyRockets.children.iterate(child => {
+            if (child && this.outOfBounds(child)) {
+                child.destroy();
             }
         });
 
@@ -162,96 +189,191 @@ class Main extends Phaser.Scene {
         this.scoreText.text = "Score: " + this.score;
     }
 
+    /**
+     * Sets the object acceleration in x and y based on its rotation.
+     * @param {Phaser.Types.Physics.Arcade.SpriteWithDynamicBody} object 
+     * @param {number} acceleration 
+     */
     accelerate(object, acceleration) {
-        object.setAcceleration(acceleration * Math.cos(object.rotation - Math.PI / 2), acceleration * Math.sin(object.rotation - Math.PI / 2))
+        object.setAcceleration(acceleration * Math.cos(object.rotation - Math.PI * 0.5), acceleration * Math.sin(object.rotation - Math.PI * 0.5))
     }
 
+    /**
+     * Calculates the velocity of an object moving in 2D using velocityX and velocityY.
+     * @param {Phaser.Types.Physics.Arcade.SpriteWithDynamicBody} object
+     * @returns {number}
+     */
     trueVelocity(object) {
         return Math.sqrt(object.body.velocity.x ** 2 + object.body.velocity.y ** 2);
     }
 
-    distance( /** @type Phaser.Types.Physics.Arcade.SpriteWithDynamicBody */object, x, y) {
+    /**
+     * Calculates the euclidean distance between an object and coordinates.
+     * @param {Phaser.Types.Physics.Arcade.SpriteWithDynamicBody} object
+     * @param {number} x
+     * @param {number} y
+     * @returns {number}
+     */
+    distance(object, x, y) {
         return Math.sqrt((object.body.x - x) ** 2 + (object.body.y - y) ** 2);
     }
 
+    /**
+     * Determines whether the object is out of the scope of the scene to destroy it, for efficiency.
+     * @param {Phaser.Types.Physics.Arcade.SpriteWithDynamicBody} object 
+     * @returns {boolean}
+     */
     outOfBounds(object) {
         return object.x > config.width * 1.5 || object.x < config.width * -0.5 || object.y > config.height * 1.5 || object.y < config.height * -0.5;
     }
 
-    damagePlayer(player, enemy) {
-        if (Date.now() - player.shieldTime < 1000)
+    /**
+     * Damage the player, reducing its health by one point, and causing Game Over if health reaches 0.
+     * @param {Phaser.Types.Physics.Arcade.SpriteWithDynamicBody} player 
+     * @param {Phaser.Types.Physics.Arcade.SpriteWithDynamicBody} _enemy 
+     * @returns {null}
+     */
+    damagePlayer(player, _enemy = null) {
+        if (player.shield)
             return;
-        player.shieldTime = player.healTime = Date.now();
+
+        if (player.health == player.maxHealth)
+            player.heal.paused = false;
+
         player.health--;
+        player.shield = true;
         player.setTint(0xff0000);
+
+        player.unshield = this.time.delayedCall(1500, function (player) {
+            player.shield = false;
+            player.setTint(0xffffff);
+        }, [player], this);
+
         this.updateTexts();
+
         if (player.health == 0)
             this.gameOver();
     }
 
-    damagePlayerRocket(player, enemyRocket) {
+    enemyRocketHit(player, enemyRocket) {
         enemyRocket.destroy();
-        if (Date.now() - player.shieldTime < 1000)
-            return;
-        player.shieldTime = player.healTime = Date.now();
-        player.health--;
-        player.setTint(0xff0000);
-        this.updateTexts();
-        if (player.health == 0)
-            this.gameOver();
+        this.damagePlayer(player);
     }
 
     reload() {
         ++this.player.ammo;
-        this.player.reloadTime = Date.now();
         this.updateTexts();
+        if (this.player.ammo == this.player.maxAmmo)
+            this.player.reload.paused = true;
     }
 
     heal() {
         ++this.player.health
-        this.player.healTime = Date.now();
         this.updateTexts();
+        if (this.player.health == this.player.maxHealth)
+            this.player.heal.paused = true;
     }
 
     launchRocket() {
+        if (this.player.ammo == this.player.maxAmmo)
+            this.player.reload.paused = false;
+
         this.player.ammo--;
-        var rocket = this.rockets.create(this.player.x, this.player.y, 'rocket');
-        rocket.setVelocity(500 * Math.cos(this.player.rotation - Math.PI / 2), 500 * Math.sin(this.player.rotation - Math.PI / 2));
+        var rocket = this.playerRockets.create(this.player.x, this.player.y, 'rocket1');
+        rocket.setVelocity(750 * Math.cos(this.player.rotation - Math.PI * 0.5), 750 * Math.sin(this.player.rotation - Math.PI * 0.5));
         rocket.rotation = this.player.rotation;
+        rocket.mass = 0.05;
         this.updateTexts();
     }
 
+    /**
+     * Launches rocket(s) from the enemy.
+     * @param {Phaser.Types.Physics.Arcade.SpriteWithDynamicBody} enemy 
+     */
     launchEnemyRocket(enemy) {
-        var rocket = this.enemyRockets.create(enemy.x, enemy.y, 'rocket2');
-        rocket.setVelocity(200 * Math.cos(enemy.rotation - Math.PI / 2), 200 * Math.sin(enemy.rotation - Math.PI / 2));
-        rocket.rotation = enemy.rotation;
-        rocket.body.mass = 0.2;
-        enemy.lastRocket = Date.now();
-    }
 
-    spawnEnemy() {
-        var x;
-        var y;
-        do {
-            x = Phaser.Math.FloatBetween(0, config.width);
-            y = Phaser.Math.FloatBetween(0, config.height);
+        var assetName = 'rocket' + (enemy.level + 1);
+        var rocketVelocity = 200 + 100 * enemy.level;
+
+        for (let i = 0; i < 1 + 7 * (enemy.level == 3); i++) {
+            var rocket = this.enemyRockets.create(enemy.x, enemy.y, assetName);
+            rocket.rotation = enemy.level == 2 ? Math.atan2(this.player.y - rocket.y, this.player.x - rocket.x) + Math.PI * 0.5 : enemy.rotation + Math.PI * 0.25 * i; // 45 degree difference between each rocket, that makes it 8 rockets distributed evenly around the level 3 enemy.
+            rocket.setVelocity(rocketVelocity * Math.cos(rocket.rotation - Math.PI * 0.5), rocketVelocity * Math.sin(rocket.rotation - Math.PI * 0.5));
+            rocket.body.mass = 0.05;
         }
-        while (this.distance(this.player, x, y) < 200);
-        var strong = Phaser.Math.FloatBetween(0, 1) > Math.max(0.5, 1 - (Date.now() - this.zero) * 0.00001);
-        var enemy = this.enemies.create(x, y, strong ? 'enemy2' : 'enemy');
-        var enemySpeed = Phaser.Math.FloatBetween(30, 100);
-        enemy.rotation = Phaser.Math.FloatBetween(0, 2 * Math.PI);
-        enemy.setVelocity(enemySpeed * Math.cos(enemy.rotation - Math.PI / 2), enemySpeed * Math.sin(enemy.rotation - Math.PI / 2));
-        enemy.body.mass = 1;
-        enemy.hasRockets = strong;
-        enemy.lastRocket = Date.now();
-        this.enemies.spawnTime = Date.now();
+
     }
 
-    destroyEnemy(rocket, enemy) {
+    spawnEnemy(level) {
+        // always spawn outside the scene
+        var x = Phaser.Math.FloatBetween(-0.25 * config.width, 1.25 * config.width);
+        var y = Phaser.Math.FloatBetween(-0.25 * config.height, 1.25 * config.height);
+        if (x > 0 && x < config.width && y > 0 && y < config.height) { // Spawned inside the scene, change x or y to be outside the scene
+            if (Phaser.Math.FloatBetween(0, 1) > 0.5) x = x / 4 + config.width;
+            else y = y / 4 + config.height;
+        }
+
+        var level = level;
+        var enemy = this.enemies.create(x, y, 'enemy' + (level + 1));
+        var enemySpeed = Phaser.Math.FloatBetween(100, 150);
+        enemy.rotation = Math.atan2(this.player.y - y, this.player.x - x) + Math.PI * 0.5;
+        enemy.setVelocity(enemySpeed * Math.cos(enemy.rotation - Math.PI * 0.5), enemySpeed * Math.sin(enemy.rotation - Math.PI * 0.5));
+        enemy.level = level;
+        enemy.health = this.enemies.health[level];
+        switch (level) {
+            case 0:
+                this.spawn[0].delay -= 20;
+                if (this.spawn[0].delay < 300) this.spawn[0].delay = 300;
+                break;
+            case 1:
+                this.spawn[1].delay -= 50;
+                if (this.spawn[1].delay < 700) this.spawn[1].delay = 700;
+                break;
+            case 2:
+                this.spawn[2].delay *= 0.8;
+                if (this.spawn[2].delay < 3500) this.spawn[2].delay = 2000;
+                break;
+            case 3:
+                this.spawn[3].delay *= 0.7;
+                if (this.spawn[3].delay < 5000) this.spawn[3].delay= 2500;
+                break;
+        }
+        if (level)
+            enemy.spawnRocket = this.time.addEvent({
+                delay: 3500 - 1000 * level,
+                callback: this.launchEnemyRocket,
+                args: [enemy],
+                callbackScope: this,
+                loop: true
+            });
+    }
+
+    rocketHit(rocket, enemy) {
         rocket.destroy();
-        enemy.destroy();
-        ++this.score;
+        this.damageEnemy(enemy);
+    }
+
+    damageEnemy(enemy) {
+        if (--enemy.health == 0) {
+
+            if (enemy.delayedEvent) // Removes the "Undo Tinting" delayed call. I think calling it after destroying enemy will cause the game to crash. :3
+                enemy.delayedEvent.remove();
+            if (enemy.level)
+                enemy.spawnRocket.remove();
+            enemy.destroy();
+            this.score += this.enemies.values[enemy.level];
+        }
+        else {
+
+            if (enemy.delayedEvent)
+                enemy.delayedEvent.remove();
+
+            enemy.setTint(0xff0000); // Tint red briefly
+
+            enemy.delayedEvent = this.time.delayedCall(200, function (enemy) { // Undo Tinting
+                enemy.setTint(0xffffff);
+            }, [enemy], this);
+        }
         this.updateTexts();
     }
 
