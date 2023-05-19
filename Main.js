@@ -51,10 +51,14 @@ class Main extends Phaser.Scene {
         this.background = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(2);
 
         // Texts
-        this.tutorial = this.add.text(config.width * 0.4, config.height * 0.45, "Use WASD or Arrow Keys to move\nUse Spacebar to Shoot\nGood Luck. <3", { align: 'center' });
-        this.healthText = this.add.text(config.width * 0.05, config.height * 0.9, "wagwe");
-        this.ammoText = this.add.text(config.width * 0.8, config.height * 0.9, "wafgew");
-        this.scoreText = this.add.text(config.width * 0.05, config.height * 0.1, "gresger");
+        this.tutorial = this.add.text(config.width * 0.4, config.height * 0.45, "Use WASD or Arrow Keys to move\nUse Spacebar to Shoot\nGood Luck. c:", { align: 'center' });
+        this.healthText = this.add.text(config.width * 0.05, config.height * 0.9, "");
+        this.ammoText = this.add.text(config.width * 0.8, config.height * 0.9, "");
+        this.scoreText = this.add.text(config.width * 0.05, config.height * 0.1, "");
+        this.tutorial.setDepth(1);
+        this.healthText.setDepth(1);
+        this.ammoText.setDepth(1);
+        this.scoreText.setDepth(1);
         this.score = 0;
 
         // Player Status
@@ -331,11 +335,11 @@ class Main extends Phaser.Scene {
                 break;
             case 2:
                 this.spawn[2].delay *= 0.8;
-                if (this.spawn[2].delay < 3500) this.spawn[2].delay = 2000;
+                if (this.spawn[2].delay < 3500) this.spawn[2].delay = 3500;
                 break;
             case 3:
                 this.spawn[3].delay *= 0.7;
-                if (this.spawn[3].delay < 5000) this.spawn[3].delay= 2500;
+                if (this.spawn[3].delay < 5000) this.spawn[3].delay = 5000;
                 break;
         }
         if (level)
