@@ -16,9 +16,9 @@ Before proceeding, make sure that you have a local server environment set up. We
 1. Open a terminal and navigate to the appropriate location in your local server environment (eg. xampp/htdocs)
 
 2. Clone the repository using the following command
-'''shell
+```shell
 git clone https://github.com/Eddard-jpg/SpaceShips
-'''
+```
 
 3. Launch your local server and start the necessary services (eg. XAMPP, Apache)
 
