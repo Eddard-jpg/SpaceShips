@@ -6,8 +6,8 @@ This is my first game. ^^
 
 ## Table of Contents
 
-[Installation](#installation)
-[Features](#features)
+- [Installation](#installation)
+- [Features](#features)
 
 ## Installation
 
