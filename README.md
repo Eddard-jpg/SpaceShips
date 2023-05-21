@@ -1,32 +1,40 @@
 # SpaceShips
 
-This repository contains the source code and documentation for SpaceShips. 
-SpaceShips is a game where you control a spaceship and try to survive the enemies as long as possible while they try to take you down. 
-This is my first game. ^^
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Features](#features)
+A simple game where you control a spaceship and try to survive against endless waves of enemies.
 
 ## Installation
 
-Before proceeding, make sure that you have a local server environment set up. We're using XAMPP as an example in the following steps.
-
-1. Open a terminal and navigate to the appropriate location in your local server environment (eg. xampp/htdocs)
-
-2. Clone the repository using the following command
+1. Clone the repository in the appropriate folder for your local server (e.g., C:\xampp\htdocs):
 ```shell
 git clone https://github.com/Eddard-jpg/SpaceShips
 ```
 
-3. Launch your local server and start the necessary services (eg. XAMPP, Apache)
+2. Launch your local server and start the necessary services.
 
-4. Open http://localhost/SpaceShips on your browser and you can enjoy the game. :)
+3. Open http://localhost/SpaceShips in your browser.
 
 ## Features
 
- - **Simple Controls**: Enjoy the game with very simple and intuitive controls (WASD/arrow keys and Spacebar) 
- - **Survival-Based Gameplay**: Test yourself and see how long you can survive against endless waves of enemies
- - **Dynamic Difficulty**: Experience a progressive increase in difficulty as you survive longer. Enemies spawn faster and stronger enemies appear.
- - **Minimalistic Graphics**: Enjoy a visually appealing and clean aesthetic with simple graphics that focus on the gameplay. Everything is rectangular.
+**Simple Controls**: Use WASD/arrow keys and Spacebar to control the spaceship.
+**Survival-Based Gameplay**: Test your skills and survive as long as possible against enemy waves.
+**Dynamic Difficulty**: Experience increasing difficulty with faster enemy spawns and stronger enemies.
+**Minimalistic Graphics**: Enjoy a visually appealing aesthetic with clean and simple graphics.
+
+## Updates
+
+### Version 2.0.0
+
+- Refactored the code for improved organization and maintainability.
+- Added a boss enemy that appears after a certain time.
+- Introduced new rocket firing patterns for added variety.
+- Implemented player leveling system for increased firepower.
+- Improved *game over* functionality with the ability to play again.
+
+### Version 1.0.0
+
+- Initial implementation of the project.
+
+## Special Thanks
+
+- [Khaled Hegazy](https://github.com/KhaledHegazy222)
+- [Omar Abd El Ghany](https://github.com/Omar622)
