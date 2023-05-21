@@ -8,7 +8,7 @@ A simple game where you control a spaceship and try to survive against endless w
 ```shell
 git clone https://github.com/Eddard-jpg/SpaceShips
 ```
-2. Download [phaser.min.js](https://github.com/photonstorm/phaser) and add it to SpaceShips/js folder.
+2. Download [phaser.min.js](https://github.com/photonstorm/phaser#Download) and add it to SpaceShips/js folder.
 
 3. Launch your local server and start the necessary services.
 
