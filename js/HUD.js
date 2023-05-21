@@ -31,7 +31,7 @@ class HUD {
 
     gameOver() {
 
-        this.HUD.update();
+        this.update();
         this.scene.add.text(config.width * 0.48, config.height * 0.5, "Game Over. :c", { align: 'center' });
         this.scene.time.addEvent({
             delay: 2000,
