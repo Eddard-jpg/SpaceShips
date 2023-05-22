@@ -30,6 +30,17 @@ You can also play the game online [here](https://eddard-jpg.github.io/SpaceShips
 
 ## Updates
 
+### Version 2.0.2
+
+- Fixed a bug where the player stops healing after leveling up with full health.
+- The player fully heals after leveling up now.
+- Added a level up pop-up.
+- A few tweaks and balance changes.
+
+### Version 2.0.1
+
+- Fixed a bug where the game froze at Game Over.
+
 ### Version 2.0.0
 
 - Refactored the code for improved organization and maintainability.
