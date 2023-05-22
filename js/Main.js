@@ -25,7 +25,7 @@ class Main extends Phaser.Scene {
             new EnemySpawner(this, 2, 15000, 7500, 0.8, true, 40000),
             new EnemySpawner(this, 3, 30000, 10000, 0.7, true, 60000),
             new EnemySpawner(this, 0, 3000, 1000, 0.99, true, 75000, -1, { velocity: 500 }),
-            new EnemySpawner(this, 4, 60000, 30000, -15000, false, 120000, -1, { x: config.width / 2, y: -100, rotation: Math.PI }),
+            new EnemySpawner(this, 4, 60000, 30000, -15000, false, 120000, -1, { x: config.width / 2, y: -200, rotation: Math.PI }),
         ];
 
 

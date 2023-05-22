@@ -153,8 +153,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 
         if (this.level < this.scoreThreshold.length && this.score >= this.scoreThreshold[this.level]) {
+            this.scene.HUD.levelUp();
             this.level++;
-            this.maxHealth++;
+            this.health = this.maxHealth++;
+            this.healEvent.paused = false;
             this.setScale(1 + this.level / 50);
         }
 

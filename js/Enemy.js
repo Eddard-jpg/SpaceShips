@@ -25,12 +25,12 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.rotation = rotation;
         velocity = velocity ?? Phaser.Math.FloatBetween([75, 100, 125, 100, 20][level], [125, 150, 175, 150, 20][level]);
         this.setVelocity(velocity * Math.cos(rotation - Math.PI * 0.5), velocity * Math.sin(rotation - Math.PI * 0.5));
-        this.setScale([1, 1.3, 1.4, 2, 4][level]);
+        this.setScale([1, 1.3, 1.4, 2, 5][level]);
         this.setBounce(0.2);
         this.body.immovable = [false, false, false, false, true][level];
 
         this.health = [1, 3, 8, 20, 100][level];
-        this.value = [1, 5, 20, 50, 500][level];
+        this.value = [1, 5, 20, 50, 250][level];
         this.fireType = [
             this.rocketLauncher.launchStraight.bind(this.rocketLauncher),
             this.rocketLauncher.launchStraight.bind(this.rocketLauncher),
