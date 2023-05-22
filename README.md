@@ -2,17 +2,24 @@
 
 A simple game where you control a spaceship and try to survive against endless waves of enemies.
 
-## Installation
+## Table of Contents
+
+- [Installation and Usage](#installation-and-usage)
+- [Features](#features)
+- [Updates](#updates)
+- [Special Thanks](#special-thanks)
+
+## Installation and Usage
 
 1. Clone the repository in the appropriate folder for your local server (e.g., C:\xampp\htdocs):
 ```shell
 git clone https://github.com/Eddard-jpg/SpaceShips
 ```
-2. Download [phaser.min.js](https://github.com/photonstorm/phaser#Download) and add it to SpaceShips/js folder.
+2. Launch your local server and start the necessary services.
 
-3. Launch your local server and start the necessary services.
+3. Open http://localhost/SpaceShips in your browser.
 
-4. Open http://localhost/SpaceShips in your browser.
+You can also play the game online [here](https://eddard-jpg.github.io/SpaceShips/)
 
 ## Features
 
