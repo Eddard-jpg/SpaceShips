@@ -11,6 +11,14 @@ class Main extends Phaser.Scene {
 
         this.gameOverCondition = this.restartCondition = false;
 
+        this.timeElapsed = 0;
+        this.time.addEvent({
+            delay: 1000,
+            callback: () => { this.timeElapsed++; },
+            callbackScope: this,
+            loop: true
+        });
+
         this.background = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(2);
 
         this.HUD = new HUD(this);
@@ -20,12 +28,12 @@ class Main extends Phaser.Scene {
         this.player = new Player(this, config.width * 0.5, config.height * 0.8);
 
         this.enemySpawners = [
-            new EnemySpawner(this, 0, 3000, 300, -20, false, 0, 75000),
-            new EnemySpawner(this, 1, 5000, 700, -50, false, 10000),
-            new EnemySpawner(this, 2, 15000, 7500, 0.8, true, 40000),
-            new EnemySpawner(this, 3, 30000, 10000, 0.7, true, 60000),
-            new EnemySpawner(this, 0, 3000, 1000, 0.99, true, 75000, -1, { velocity: 500 }),
-            new EnemySpawner(this, 4, 60000, 30000, -15000, false, 120000, -1, { x: config.width / 2, y: -200, rotation: Math.PI }),
+            new EnemySpawner(this, 0, 3000, 300, -20, false, 5000, 80000),
+            new EnemySpawner(this, 1, 5000, 700, -50, false, 15000),
+            new EnemySpawner(this, 2, 15000, 7500, 0.8, true, 45000),
+            new EnemySpawner(this, 3, 30000, 10000, 0.7, true, 65000),
+            new EnemySpawner(this, 0, 3000, 1000, 0.99, true, 80000, -1, { velocity: 500 }),
+            new EnemySpawner(this, 4, 60000, 30000, -15000, false, 125000, -1, { x: config.width / 2, y: -200, rotation: Math.PI }),
         ];
 
 
@@ -38,12 +46,6 @@ class Main extends Phaser.Scene {
             return;
         }
 
-        if (this.HUD.tutorial.active) {
-            if (Object.values(this.input.keyboard.keys).some((key) => key.isDown))
-                this.HUD.tutorial.destroy();
-            else
-                return;
-        }
 
         this.HUD.update();
 
