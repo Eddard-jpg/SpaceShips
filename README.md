@@ -33,6 +33,10 @@ You can also play the game online [here](https://eddard-jpg.github.io/SpaceShips
 
 ## Updates
 
+### Version 2.0.5
+
+- Fixed a bug with the last update displaying text on top of each other in game over
+
 ### Version 2.0.4
 
 - Fixed the background size being fixed, causing big screens to have black background parts.
