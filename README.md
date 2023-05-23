@@ -24,8 +24,11 @@ You can also play the game online [here](https://eddard-jpg.github.io/SpaceShips
 ## Features
 
 **Simple Controls**: Use WASD/arrow keys and Spacebar to control the spaceship.
+
 **Survival-Based Gameplay**: Test your skills and survive as long as possible against enemy waves.
+
 **Dynamic Difficulty**: Experience increasing difficulty with faster enemy spawns and stronger enemies.
+
 **Minimalistic Graphics**: Enjoy a visually appealing aesthetic with clean and simple graphics.
 
 ## Updates
