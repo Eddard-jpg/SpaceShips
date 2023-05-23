@@ -11,8 +11,10 @@ class HUD {
 
         this.scene = scene;
 
+        var padding = 40;
+
         this.texts = [
-            this.tutorial = scene.add.text(config.width * 0.38, config.height * 0.3,
+            this.tutorial = scene.add.text(config.width * 0.5, config.height * 0.5,
                 "Use WASD or Arrow Keys to Move\n" +
                 "W: Accelerate\n" +
                 "S: Decelerate\n" +
@@ -22,14 +24,18 @@ class HUD {
                 "Survive as long as possible\n" +
                 "and defeat as many enemies as you can.\n\n" +
                 "Good luck! c:",
-                { align: 'center' }),
-            this.healthText = scene.add.text(config.width * 0.05, config.height * 0.9, ""),
-            this.ammoText = scene.add.text(config.width * 0.8, config.height * 0.9, ""),
-            this.scoreText = scene.add.text(config.width * 0.05, config.height * 0.1, ""),
-            this.timeText = scene.add.text(config.width * 0.8, config.height * 0.1, ""),
-            this.levelUpText = scene.add.text(config.width * 0.48, config.height * 0.5, "Level Up!"),
-            this.gameOverText = scene.add.text(config.width * 0.48, config.height * 0.5, "Game Over. :c"),
-            this.playAgainText = scene.add.text(config.width * 0.45, config.height * 0.53, "Press any key to restart.")
+                { align: 'center' }).setOrigin(0.5),
+            
+            this.scoreText = scene.add.text(padding, padding, "").setOrigin(0),
+            this.timeText = scene.add.text(config.width - padding, padding, "").setOrigin(1, 0),
+            
+            this.healthText = scene.add.text(padding, config.height - padding, "").setOrigin(0, 1),
+            this.ammoText = scene.add.text(config.width - padding, config.height - padding, "").setOrigin(1),
+
+            this.levelUpText = scene.add.text(config.width * 0.5, config.height * 0.5, "Level Up!").setOrigin(0.5),
+            
+            this.gameOverText = scene.add.text(config.width * 0.5, config.height * 0.5, "Game Over. :c").setOrigin(0.5),
+            this.playAgainText = scene.add.text(config.width * 0.5, config.height * 0.5, "Press any key to restart.").setOrigin(0.5),
         ]
         this.levelUpText.visible = this.gameOverText.visible = this.playAgainText.visible = false;
 

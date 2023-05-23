@@ -19,7 +19,8 @@ class Main extends Phaser.Scene {
             loop: true
         });
 
-        this.background = this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(2);
+        this.background = this.add.image(0, 0, 'sky').setOrigin(0, 0);
+        this.background.setScale(config.width / this.background.width, config.height / this.background.height);
 
         this.HUD = new HUD(this);
 
