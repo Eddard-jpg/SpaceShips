@@ -102,8 +102,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.shield)
             return;
 
-        if (this.health == this.maxHealth)
-            this.healEvent.paused = false;
+        this.healEvent.paused = false;
 
         this.health -= typeof damage == Number ? damage : 1;
         this.shield = true;
@@ -155,8 +154,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.level < this.scoreThreshold.length && this.score >= this.scoreThreshold[this.level]) {
             this.scene.HUD.levelUp();
             this.level++;
-            this.health = this.maxHealth++;
-            this.healEvent.paused = false;
+            this.health = ++this.maxHealth;
+            this.healEvent.paused = true;
             this.setScale(1 + this.level / 50);
         }
 
