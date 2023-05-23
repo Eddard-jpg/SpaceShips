@@ -25,19 +25,18 @@ class HUD {
                 "and defeat as many enemies as you can.\n\n" +
                 "Good luck! c:",
                 { align: 'center' }).setOrigin(0.5),
-            
+
             this.scoreText = scene.add.text(padding, padding, "").setOrigin(0),
             this.timeText = scene.add.text(config.width - padding, padding, "").setOrigin(1, 0),
-            
+
             this.healthText = scene.add.text(padding, config.height - padding, "").setOrigin(0, 1),
             this.ammoText = scene.add.text(config.width - padding, config.height - padding, "").setOrigin(1),
 
             this.levelUpText = scene.add.text(config.width * 0.5, config.height * 0.5, "Level Up!").setOrigin(0.5),
-            
-            this.gameOverText = scene.add.text(config.width * 0.5, config.height * 0.5, "Game Over. :c").setOrigin(0.5),
-            this.playAgainText = scene.add.text(config.width * 0.5, config.height * 0.5, "Press any key to restart.").setOrigin(0.5),
+
+            this.gameOverText = scene.add.text(config.width * 0.5, config.height * 0.5, "Game Over. :c\n\n", { align: 'center' }).setOrigin(0.5),
         ]
-        this.levelUpText.visible = this.gameOverText.visible = this.playAgainText.visible = false;
+        this.levelUpText.visible = this.gameOverText.visible = false;
 
         scene.time.addEvent({
             delay: 10000,
@@ -52,7 +51,6 @@ class HUD {
         this.timeText.setDepth(3);
         this.levelUpText.setDepth(3);
         this.gameOverText.setDepth(3);
-        this.playAgainText.setDepth(3);
 
     }
 
@@ -105,7 +103,10 @@ class HUD {
         this.scoreText.visible = this.timeText.visible = this.gameOverText.visible = true;
         this.scene.time.addEvent({
             delay: 2000,
-            callback: () => { this.scene.restartCondition = this.playAgainText.visible = true; },
+            callback: () => {
+                this.scene.restartCondition = true;
+                this.gameOverText.text += "Press any key to restart."
+            },
             callbackScope: this
         })
     }

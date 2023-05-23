@@ -33,6 +33,18 @@ You can also play the game online [here](https://eddard-jpg.github.io/SpaceShips
 
 ## Updates
 
+### Version 2.0.4
+
+- Fixed the background size being fixed, causing big screens to have black background parts.
+- Fixed text alignments and inconsistencies.
+
+### Version 2.0.3
+
+- Tutorial is now more helpful and doesn't disappear immediately after moving.
+- Enemies start spawning 5 seconds later, allowing more time for reading the tutorial and getting ready.
+- Resolution now matches the window. May cause weird behaviour sometimes. :3
+- Time Elapsed added to the HUD.
+
 ### Version 2.0.2
 
 - Fixed a bug where the player stops healing after leveling up with full health.
