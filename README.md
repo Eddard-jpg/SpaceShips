@@ -33,6 +33,10 @@ You can also play the game online [here](https://eddard-jpg.github.io/SpaceShips
 
 ## Updates
 
+### Version 2.0.6
+
+- The player can now restart the game using R key instead of any key. That helps prevent accidentally restarting immediately after game over
+
 ### Version 2.0.5
 
 - Fixed a bug with the last update displaying text on top of each other in game over.
