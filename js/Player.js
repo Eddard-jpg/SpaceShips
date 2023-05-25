@@ -23,7 +23,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setBounce(0.4);
         this.setCollideWorldBounds();
 
-        this.health = this.maxHealth = 10
+        this.health = this.maxHealth = 10;
         this.healPeriod = 3000;
         this.healEvent = scene.time.addEvent({
             delay: this.healPeriod,

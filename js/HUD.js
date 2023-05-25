@@ -105,7 +105,7 @@ class HUD {
             delay: 2000,
             callback: () => {
                 this.scene.restartCondition = true;
-                this.gameOverText.text += "Press any key to restart."
+                this.gameOverText.text += "Press R to restart."
             },
             callbackScope: this
         })

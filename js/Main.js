@@ -37,12 +37,14 @@ class Main extends Phaser.Scene {
             new EnemySpawner(this, 4, 60000, 30000, -15000, false, 125000, -1, { x: config.width / 2, y: -200, rotation: Math.PI }),
         ];
 
+        
+        this.R = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
     }
 
     update() {
         if (this.gameOverCondition) {
-            if (this.restartCondition && Object.values(this.input.keyboard.keys).some((key) => key.isDown))
+            if (this.restartCondition && Phaser.Input.Keyboard.JustDown(this.R))
                 this.scene.start('Main');
             return;
         }
