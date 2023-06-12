@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "outDir": "dist",
+    "moduleResolution": "Node",
+    "typeRoots": ["./node_modules", "./node_modules/@types"],
+    "types": ["phaser"],
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "node_modules/phaser/dist/*.d.ts"
+  ]
+}

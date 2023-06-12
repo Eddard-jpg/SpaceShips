@@ -1,11 +1,10 @@
 # SpaceShips
 
-A simple game where you control a spaceship and try to survive against endless waves of enemies.
+A simple game where you control a spaceship and try to survive levels against waves of enemies.
 
 ## Table of Contents
 
 - [Installation and Usage](#installation-and-usage)
-- [Features](#features)
 - [Updates](#updates)
 - [Special Thanks](#special-thanks)
 
@@ -19,19 +18,19 @@ git clone https://github.com/Eddard-jpg/SpaceShips
 
 3. Open http://localhost/SpaceShips in your browser.
 
-You can also play the game online [here](https://eddard-jpg.github.io/SpaceShips/)
-
-## Features
-
-**Simple Controls**: Use WASD/arrow keys and Spacebar to control the spaceship.
-
-**Survival-Based Gameplay**: Test your skills and survive as long as possible against enemy waves.
-
-**Dynamic Difficulty**: Experience increasing difficulty with faster enemy spawns and stronger enemies.
-
-**Minimalistic Graphics**: Enjoy a visually appealing aesthetic with clean and simple graphics.
+Or you can simply play the game online [here](https://eddard-jpg.github.io/SpaceShips/).
 
 ## Updates
+
+### Version 3.0.0
+
+- Revamped the game structure to include a main menu, a tutorial, and distinct levels with different scenarios.
+- Introduced new mechanics and enemy behaviors, providing a more diverse and challenging gameplay experience.
+- Implemented survival mode alongside the newly added levels, offering the original gameplay mode for players.
+- Upgraded the game engine from Arcade to Matter.js for enhanced physics simulations and interactions.
+- Migrated the codebase from JavaScript to TypeScript for improved type safety and developer experience.
+- Restructured and refactored the codebase, resulting in improved code organization, readability, and maintainability.
+- Made various optimizations and improvements for performance and gameplay enhancements.
 
 ### Version 2.0.6
 
