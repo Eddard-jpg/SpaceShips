@@ -2,7 +2,7 @@ import type Level from "../Level";
 import Enemy from "../Enemy";
 import RocketLauncher from "../RocketLauncher";
 import { EnemyConstants, LevelConstants } from "../../Constants";
-import { normalizeAngle, rotationAToB } from "../../functions";
+import { distance, normalizeAngle, rotationAToB } from "../../functions";
 
 export default class Enemy5 extends Enemy {
 
@@ -15,7 +15,7 @@ export default class Enemy5 extends Enemy {
         this.value = 250 * (config.multipliers.value ?? 1);
 
         this.maxVelocity = Phaser.Math.FloatBetween(0.4, 0.4) * (config.multipliers.velocity ?? 1);
-        this.maxAngularVelocity = 0.001 * (config.multipliers.angularVelocity ?? 1);
+        this.maxAngularVelocity = 0.0002 * (config.multipliers.angularVelocity ?? 1);
 
         this.setScale(3.5 * (config.multipliers.scale ?? 1));
         this.setDensity(0.003 * (config.multipliers.density ?? 1));
@@ -80,9 +80,11 @@ export default class Enemy5 extends Enemy {
     }
 
     update(): void {
-        if (this.y < this.scene.cameras.main.height / 2) {
+        let center = { x: this.scene.cameras.main.width / 2, y: this.scene.cameras.main.height / 2 };
+        if (distance(this, center) > 100) {
             this.thrust(this.maxVelocity * EnemyConstants.FRICTION_AIR * this.body.mass / LevelConstants.DELTA_TIME_SQUARED);
-            let centerDirection = rotationAToB(this, { x: this.scene.cameras.main.width / 2, y: this.scene.cameras.main.height / 2 });
+            
+            let centerDirection = rotationAToB(this, center);
             let myDirection = normalizeAngle(this.rotation);
             if (centerDirection < myDirection) { centerDirection += Math.PI * 2; }
 
