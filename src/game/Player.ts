@@ -58,7 +58,6 @@ export default class Player extends Phaser.Physics.Matter.Sprite {
         this.rotation = -Math.PI / 2;
         this.setBounce(PlayerConstants.BOUNCE);
         this.setFriction(PlayerConstants.FRICTION, PlayerConstants.FRICTION_AIR);
-        this.setDensity(cheatsEnabled ? this.body.density * 5 : this.body.density);
 
         this.score = 0;
         this.level = 0;
@@ -240,7 +239,6 @@ export default class Player extends Phaser.Physics.Matter.Sprite {
             let force = _force * (100 / distance(this, enemy)) ** 0.5;
             if (!enemy) { return; }
             let angle = rotationAToB(this, enemy);
-            this.applyForce(new Phaser.Math.Vector2(-force * Math.cos(angle), -force * Math.sin(angle)))
             enemy.applyForce(new Phaser.Math.Vector2(force * Math.cos(angle), force * Math.sin(angle)));
             return true;
         });

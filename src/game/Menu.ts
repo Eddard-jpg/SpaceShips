@@ -92,12 +92,13 @@ export default class Menu extends Level {
         let title = this.add.text(centerX, 100, 'Settings', titleStyle).setOrigin(0.5);
 
         let toggleCheatsButton = this.createButton(centerX, 250, (cheatsEnabled ? 'Disable' : 'Enable') + ' Cheats', menuButtonStyle, this.toggleCheats);
+        let cheatsHint = this.add.text(centerX + 200, 250, 'Try Z, X, C.');
         let unlockLevelsButton = this.createButton(centerX, 350, "Unlock All Levels", menuButtonStyle, unlockLevels);
         let resetDataButton = this.createButton(centerX, 450, 'Reset Data', menuButtonStyle, this.resetData);
         let backButton = this.createButton(centerX, 600, 'Back', menuButtonStyle, this.showMainMenu);
 
         this.settingsMenu = this.add.container().setDepth(2);
-        this.settingsMenu.add([title, toggleCheatsButton, unlockLevelsButton, resetDataButton, backButton]);
+        this.settingsMenu.add([title, toggleCheatsButton, cheatsHint, unlockLevelsButton, resetDataButton, backButton]);
     }
 
     start() {
