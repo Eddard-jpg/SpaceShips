@@ -246,7 +246,7 @@ export default class Level10 extends Level {
             endAfter: 220100,
         });
 
-        this.time.delayedCall(1250000, this.spawnBoss, [], this);
+        this.time.delayedCall(125000, this.spawnBoss, [], this);
     }
 
     spawnBoss() {
