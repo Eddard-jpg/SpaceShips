@@ -15,7 +15,6 @@ export default class Level10 extends Level {
         this.level = 10;
         this.hint = "";
         this.HUD.init();
-        this.victory();
 
         this.time.delayedCall(2000, this.stage1, [], this);
         this.time.delayedCall(125000, this.stage2, [], this);
