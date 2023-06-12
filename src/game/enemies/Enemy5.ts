@@ -15,7 +15,7 @@ export default class Enemy5 extends Enemy {
         this.value = 250 * (config.multipliers.value ?? 1);
 
         this.maxVelocity = Phaser.Math.FloatBetween(0.4, 0.4) * (config.multipliers.velocity ?? 1);
-        this.maxAngularVelocity = 0.005 * (config.multipliers.angularVelocity ?? 1);
+        this.maxAngularVelocity = 0.001 * (config.multipliers.angularVelocity ?? 1);
 
         this.setScale(3.5 * (config.multipliers.scale ?? 1));
         this.setDensity(0.003 * (config.multipliers.density ?? 1));
