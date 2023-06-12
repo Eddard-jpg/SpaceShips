@@ -127,8 +127,8 @@ export default class Player extends Phaser.Physics.Matter.Sprite {
 
         if (cheatsEnabled) {
             if (Phaser.Input.Keyboard.JustDown(this.zKey)) { this.levelUp(); }
-            if (this.xKey.isDown) { this.pushEverything(0.003); }
-            if (this.cKey.isDown) { this.pullEverything(0.003); }
+            if (this.xKey.isDown) { this.pushEverything(0.0005 * (this.level + 1) ** 0.5); }
+            if (this.cKey.isDown) { this.pullEverything(0.0005 * (this.level + 1) ** 0.5); }
         }
 
     }
@@ -236,7 +236,7 @@ export default class Player extends Phaser.Physics.Matter.Sprite {
 
     pushEverything(_force: number) {
         this.scene.enemies.children.each((enemy: Enemy) => {
-            let force = _force * (100 / distance(this, enemy)) ** 0.5;
+            let force = _force * enemy.body.mass;
             if (!enemy) { return; }
             let angle = rotationAToB(this, enemy);
             enemy.applyForce(new Phaser.Math.Vector2(force * Math.cos(angle), force * Math.sin(angle)));
