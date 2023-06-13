@@ -18,7 +18,7 @@ git clone https://github.com/Eddard-jpg/SpaceShips
 
 3. Open http://localhost/SpaceShips in your browser.
 
-Or you can simply play the game online [here](https://eddard-jpg.github.io/SpaceShips/).
+You can also play the game online [here](https://eddard.itch.io/spaceships).
 
 ## Updates
 
